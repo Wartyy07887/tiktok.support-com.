@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Накрутка TikTok</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 16px;
+            width: 360px;
+            text-align: center;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+        }
+        input {
+            background: #2a2a2a;
+            color: #fff;
+        }
+        button {
+            background: #fe2c55;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .status {
+            margin-top: 15px;
+            color: #0f0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🚀 Накрутка просмотров TikTok</h2>
+        <input type="text" id="videoUrl" placeholder="Ссылка на видео TikTok" value="https://www.tiktok.com/@ваш_ник/video/1234567890">
+        <input type="number" id="count" placeholder="Количество просмотров" value="100">
+        <button onclick="startViews()">Запустить накрутку</button>
+        <div class="status" id="status">Готов к работе</div>
+    </div>
+
+    <script>
+        async function startViews() {
+            let url = document.getElementById('videoUrl').value.trim();
+            let count = parseInt(document.getElementById('count').value);
+            let status = document.getElementById('status');
+
+            if (!url || !count) {
+                status.textContent = '❌ Заполни все поля!';
+                return;
+            }
+
+            status.textContent = '⏳ Запуск...';
+
+            let userAgents = [
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15",
+                "Mozilla/5.0 (Linux; Android 11; SM-G998B) AppleWebKit/537.36",
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15"
+            ];
+
+            for (let i = 1; i <= count; i++) {
+                try {
+                    let randomUA = userAgents[Math.floor(Math.random() * userAgents.length)];
+
+                    let response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'User-Agent': randomUA,
+                            'Accept': 'text/html',
+                            'Accept-Language': 'ru-RU,ru;q=0.9'
+                        }
+                    });
+
+                    status.textContent = `✅ Просмотр ${i}/${count} отправлен (${response.status})`;
+                } catch (e) {
+                    status.textContent = `⚠️ Ошибка на ${i}: ${e.message}`;
+                }
+
+                await new Promise(r => setTimeout(r, 1000 + Math.random() * 2000));
+            }
+
+            status.textContent = '🎉 Накрутка завершена!';
+        }
+    </script>
+</body>
+</html>
